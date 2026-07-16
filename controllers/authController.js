@@ -5,7 +5,29 @@ import jwt from "jsonwebtoken";
 
 const prisma = new PrismaClient();
 
+// TAMBAHKAN FUNGSI REGISTER INI:
+export const register = async (req, res, next) => {
+    try {
+        const { nama, email, password } = req.body;
+        const hashedPassword = await bcrypt.hash(password, 10);
+        
+        const user = await prisma.user.create({
+            data: {
+                nama,
+                email,
+                password: hashedPassword,
+                role: "STAFF" // Default role
+            }
+        });
+        
+        res.status(201).json({ message: "User berhasil didaftarkan" });
+    } catch (error) {
+        next(error);
+    }
+};
+
 export const login = async (req, res, next) => {
+    // ... (kode login kamu yang sudah ada, biarkan saja)
     try {
         const { email, password } = req.body;
         const user = await prisma.user.findUnique({ where: { email } });
@@ -32,6 +54,7 @@ export const login = async (req, res, next) => {
 };
 
 export const refresh = async (req, res, next) => {
+    // ... (kode refresh kamu yang sudah ada, biarkan saja)
     try {
         const { refreshToken } = req.cookies;
         if (!refreshToken) return res.status(401).json({ message: "Token kosong" });
@@ -49,4 +72,4 @@ export const refresh = async (req, res, next) => {
     } catch (error) {
         next(error);
     }
-};
+};  
