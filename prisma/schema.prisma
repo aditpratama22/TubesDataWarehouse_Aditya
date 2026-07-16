@@ -8,12 +8,13 @@ datasource db {
 }
 
 model User {
-  id           Int                    @id @default(autoincrement())
-  nama         String                 @db.VarChar(100)
-  email        String                 @unique @db.VarChar(100)
-  password     String                 @db.VarChar(255)
-  role         String                 @default("STAFF") 
-  transactions InventoryTransaction[]
+  id            Int                    @id @default(autoincrement())
+  nama          String                 @db.VarChar(100)
+  email         String                 @unique @db.VarChar(100)
+  password      String                 @db.VarChar(255)
+  role          String                 @default("STAFF") 
+  refresh_token String?                @db.Text 
+  transactions  InventoryTransaction[]
 }
 
 model Category {
